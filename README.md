@@ -17,15 +17,15 @@ Reverse Engineering Journal — OWASP Uncrackable Lvl.4 (Android, Native, Smali)
 .method public j()Z
 ```
 который вызывает цепочку проверок:
-h() - опасные пакеты
-g() - опасные приложения
-a("su") — поиск бинаря su
-b() — опасные props
-d() — монтирования в режиме RW
-i() — test-keys
-f() — which su
-e() — native RootBeer
-c() — "magisk"
+1. h() - опасные пакеты
+2. g() - опасные приложения
+3. a("su") — поиск бинаря su
+4. b() — опасные props
+5. d() — монтирования в режиме RW
+6. i() — test-keys
+7. f() — which su
+8. e() — native RootBeer
+9. c() — "magisk"
 
 Пропатчено в Smali (полностью заменено содержимое):
 ```
