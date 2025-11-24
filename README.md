@@ -49,5 +49,71 @@ if (rb.m2456j() || (rb.m2441a() && rb.m2451e())) {
 }
 ```
 Если RootBeer обнаруживает root раньше — приложение крашится до вызова твоего пропатченного j().
+## IV. Был выбран вариант с пропатчиванием Smali метода проверки
+Патчить будем метод OnCreate. Он выглядит очень нагруженно и я не буду прикладывать его листинг.
+Нас интересует следующий блок и переходы которые ведут к нему:
+```
+:cond_0
+const/16 v1, 0x539
+div-int/lit8 v1, v1, 0x0   # <-- крэш
+...
+```
+## V. Будем полностью скипать блок с RootBeer (самый очевидный и простой метод как мне показалось)
+### Было:
+```
+.line 37
+.local v0, "rb":Lb/a/a/b;
 
-# TBC
+invoke-virtual {v0}, Lb/a/a/b;->j()Z
+move-result v1
+
+if-nez v1, :cond_0
+
+invoke-virtual {v0}, Lb/a/a/b;->a()Z
+move-result v1
+
+if-eqz v1, :cond_1
+invoke-virtual {v0}, Lb/a/a/b;->e()Z
+move-result v1
+
+if-eqz v1, :cond_1
+.line 38
+
+:cond_0
+const/16 v1, 0x539
+div-int/lit8 v1, v1, 0x0
+---
+:cond_1
+invoke-virtual {p0}, Lre/pwnme/MainActivity;->g()V
+```
+
+После патча:
+```
+.line 37
+.local v0, "rb":Lb/a/a/b;
+# >>> НАША ВСТАВКА <<<
+goto :cond_1
+# ДАЛЬШЕ ВСЁ ОСТАВЛЯЕМ КАК ЕСТЬ (оно станет мёртвым кодом)
+invoke-virtual {v0}, Lb/a/a/b;->j()Z
+move-result v1
+if-nez v1, :cond_0
+invoke-virtual {v0}, Lb/a/a/b;->a()Z
+move-result v1
+if-eqz v1, :cond_1
+invoke-virtual {v0}, Lb/a/a/b;->e()Z
+move-result v1
+if-eqz v1, :cond_1
+.line 38
+:cond_0
+const/16 v1, 0x539
+div-int/lit8 v1, v1, 0x0
+...
+:cond_1
+invoke-virtual {p0}, Lre/pwnme/MainActivity;->g()V
+```
+### В результате:
+1. При любом раскладе после создания rb сразу прыгаем в :cond_1
+2. Другие методы не вызываются
+3. Краш приложения через "1337/0" никогда не выполняется
+
+P.S. После поисков в интернете и аналитики, я пришла к выводу, что это самый безопасный и предсказуемый обход.
