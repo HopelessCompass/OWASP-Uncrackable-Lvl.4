@@ -63,26 +63,20 @@ div-int/lit8 v1, v1, 0x0   # <-- крэш
 ```
 .line 37
 .local v0, "rb":Lb/a/a/b;
-
 invoke-virtual {v0}, Lb/a/a/b;->j()Z
 move-result v1
-
 if-nez v1, :cond_0
-
 invoke-virtual {v0}, Lb/a/a/b;->a()Z
 move-result v1
-
 if-eqz v1, :cond_1
 invoke-virtual {v0}, Lb/a/a/b;->e()Z
 move-result v1
-
 if-eqz v1, :cond_1
 .line 38
-
 :cond_0
 const/16 v1, 0x539
 div-int/lit8 v1, v1, 0x0
----
+***
 :cond_1
 invoke-virtual {p0}, Lre/pwnme/MainActivity;->g()V
 ```
@@ -107,7 +101,7 @@ if-eqz v1, :cond_1
 :cond_0
 const/16 v1, 0x539
 div-int/lit8 v1, v1, 0x0
-...
+***
 :cond_1
 invoke-virtual {p0}, Lre/pwnme/MainActivity;->g()V
 ```
