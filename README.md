@@ -85,7 +85,7 @@ invoke-virtual {p0}, Lre/pwnme/MainActivity;->g()V
 ```
 .line 37
 .local v0, "rb":Lb/a/a/b;
-# >>> НАША ВСТАВКА <<<
+# МОЙ ПАТЧ
 goto :cond_1
 # ДАЛЬШЕ ВСЁ ОСТАВЛЯЕМ КАК ЕСТЬ (оно станет мёртвым кодом)
 invoke-virtual {v0}, Lb/a/a/b;->j()Z
